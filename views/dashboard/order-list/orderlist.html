@@ -1,0 +1,162 @@
+<div print-section class="container-fluid" print-only>
+
+	<div class="row">
+		<p>Công ty FPT Infomation Systems
+			<br> Địa chỉ : 261 - 263 Nam giao building.
+			<br> ĐT :
+			<br>Fax :
+			<br>Website : fis.com.vn
+		</p>
+		<h3>ĐƠN ĐẶT HÀNG </h3>
+		<p>
+			<br>Khách Hàng : {{order.customerName}}
+			<i style="margin-left: 12cm">Mã Đơn hàng : {{order.poNumber}}</i>
+
+			<br>Địa Chỉ : {{order.customerAddress}}
+			<br>
+			<br>Kho Hàng : {{order.Warehouse}}
+		</p>
+		<table print-table="order" class="table table-striped table-bordered table-list ">
+			<thead>
+				<tr>
+					<th class="col-text">P/N</th>
+					<th class="col-text">Tên hàng</th>
+					<th class="col-text">Số lượng</th>
+					<th class="col-text">Đơn giá</th>
+					<th class="col-text">Nhà cung cấp</th>
+					<th class="col-text">Thành tiền</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in order.products">
+					<td>{{::item.pnNumber}}</td>
+					<td>{{::item.name}}</td>
+					<td>{{::item.frequency}}</td>
+					<td>{{::formatCrrentcy(item.unitPrice)}}</td>
+					<td>{{::item.NCCDN}}</td>
+					<td>{{formatCrrentcy(item.price)}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<p style="margin-left :15cm">Tổng tiền hàng : {{order.totalPrice}} VNĐ</p>
+		<p style="margin-left :16cm">Ngày.....Tháng.....Năm</p>
+		<p style="margin-left :16.5cm">Người lập phiếu</p>
+		<i style="margin-left :16cm">(Ký và ghi rõ họ tên) </i>
+	</div>
+</div>
+<div class="panel panel-default panel-table">
+	<div class="panel-heading">
+		<div class="row">
+			<div class="col col-md-2">
+				<h3 class="panel-title" style="margin-top:8px">
+					<span>
+						<i class="	glyphicon glyphicon-shopping-cart"></i>
+					</span> Orders</h3>
+			</div>
+			<div class="col-md-4 ">
+				<div id="custom-search-input">
+					<div class="input-group col-md-12">
+						<input type="text" ng-model="filterALL" class="  search-query form-control" placeholder="Filter" />
+						<span class="input-group-btn">
+							<button class="btn btn-danger" type="button">
+								<span class=" glyphicon glyphicon-search"></span>
+							</button>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col col-xs-6 text-right">
+				<div class="pull-right">
+					<div class="btn-group" data-toggle="buttons">
+						<label ng-hide="pomViewApprove" class="btn btn-primary btn-filter" ng-model="status" ng-click="filterStatus('Approve')">
+							<input type="radio" name="options" id="option2"> Approve
+						</label>
+						<label class="btn btn-warning btn-filter" ng-model="status" ng-click="filterStatus('Pending')">
+							<input type="radio" name="options" id="option2"> Pending
+						</label>
+						<label class="btn btn-info btn-filter" ng-model="status" ng-click="filterStatus('Recall')">
+							<input type="radio" name="options" id="option3"> Recall
+						</label>
+						<label class="btn btn-danger btn-filter" ng-model="status" ng-click="filterStatus('Cancel')">
+							<input type="radio" name="options" id="option3"> Cancel
+						</label>
+						<label class="btn btn-success btn-filter" ng-model="status" ng-click="filterStatus('Complete')">
+							<input type="radio" name="options" id="option1"> Completed
+						</label>
+						<label class="btn btn-default btn-filter" ng-model="status" ng-click="filterStatus('')">
+							<input type="radio" name="options" id="option3"> All
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-body">
+		<table id="mytable" class="table table-striped table-bordered table-list">
+			<thead>
+				<tr>
+					<th class="hidden-xs">STT</th>
+					<th class="hidden-xs">PO</th>
+					<th ng-show='idViewAM' class="hidden-xs">AM</th>
+					<th class="col-text">Customer</th>
+					<th class="col-text">Total Price</th>
+					<th class="col-text">Date Time </th>
+					<th class="col-text">Status</th>
+					<th ng-show="btnApprove" class="col-text">Approve</th>
+					<th>Print</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr style="background-color: white;" ng-repeat="order in ordersCurrent|filter:{status:status}|filter:filterALL">
+					<td>{{ordersCurrent.indexOf(order)+1+(currentPage-1)*itemsPerPage}}</td>
+					<td>
+						<a href="#!/dashboard/order-list/{{order.poNumber}}">{{order.poNumber}}</a>
+					</td>
+					<td ng-show='idViewAM'>{{order.EmplID}}</td>
+					<td>{{order.customerName}}</td>
+					<td>
+						<i class="pull-right">{{formatCrrentcy(order.totalPrice)}}
+							<span class="label label-success "> VNĐ</span>
+						</i>
+					</td>
+					<td>{{formatSecToDate(order.datetime)}}</td>
+					<td>
+						<span ng-hide="order.notePOM!=''" ng-class="{'label label-warning': (order.status=='Pending' && order.approve == true),'label label-info': order.status=='Recall','label label-danger': order.status=='Cancel','label label-success': order.status=='Complete','label label-primary' : order.approve == false}"
+						 style="font-size: 14px;">{{order.status}}
+						</span>
+						<button ng-show="order.notePOM!=''" ng-controller="popupCtrl" ng-click="showAlert($event,order.notePOM,'NOTE')" ng-class="{'btn btn-warning': (order.status=='Pending' && order.approve == true),'btn btn-info': order.status=='Recall','btn btn-danger': order.status=='Cancel','btn btn-success': order.status=='Complete','btn btn-primary' : order.approve == false}"
+						 style="font-size: 15px;">{{order.status}} </button>
+
+					</td>
+					<td ng-show="btnApprove">
+						<button ng-click="approveOrder(order)" type="submit" class="btn btn-primary 	glyphicon glyphicon-check" id="btnContactUs"
+						 ng-disabled="order.status!='Approve'"></button>
+					</td>
+					<td>
+						<button style="display: none" id="kaka" class="btn btn-primary" print-btn>
+							<i class="fa fa-print"></i>
+							<button class="btn btn-default" ng-click="printValue(order)">
+								<i class="fa fa-print"></i>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="panel-footer">
+		<div class="row">
+			<div class=" col-xs-offset-3 col-xs-6">
+				<ul uib-pagination total-items="totalItems" ng-click="setPage(currentPage)" ng-model="currentPage" ng-change="pageChanged()"></ul>
+			</div>
+			<div class=" col-xs-3">
+				<div class="pull-right">
+					<a href="#!/dashboard/order" class="btn btn-primary" style="margin-top: 20px">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Order
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

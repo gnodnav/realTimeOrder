@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Store management</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="/bower/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/stylesheets/style.css">
+  <link rel="stylesheet" href="/bower/angular-material/angular-material.min.css">
+  <link rel="stylesheet" href="/bower/jquery-ui-custom/jquery-ui.min.css">
+  <link rel="stylesheet" href="/bower/jtable/lib/themes/jqueryui/jtable_jqueryui.min.css" />
+  <link rel="stylesheet" href="/bower/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/bower/angular-ui-notification/dist/angular-ui-notification.min.css">
+  <link rel="stylesheet" href="/bower/bootstrap-fileinput/css/fileinput.css">
+  <link href="/bower/bootstrap-fileinput/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css" />
+
+
+  <script src="/bower/jquery/dist/jquery.min.js"></script>
+  <script src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/bower/jquery-ui-custom/jquery-ui.min.js"></script>
+  <script src="/bower/angular/angular.min.js"></script>
+  <script src="/bower/angular-route/angular-route.min.js"></script>
+  <script src="/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="/bower/angular-animate/angular-animate.min.js"></script>
+  <script src="/bower/angular-aria/angular-aria.min.js"></script>
+  <script src="/bower/angular-messages/angular-messages.min.js"></script>
+  <script src="/bower/angular-material/angular-material.min.js"></script>
+  <script src="/bower/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="/bower/ngstorage/ngStorage.min.js"></script>
+  <script src="/bower/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
+  <script src="/bower/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <!-- bootstap input -->
+  <script src="/bower/bootstrap-fileinput/js/plugins/sortable.js"></script>
+  <script src="/bower/bootstrap-fileinput/js/fileinput.min.js"></script>
+  <script src="/bower/bootstrap-fileinput/themes/explorer/theme.js"></script>
+  <!-- jtable -->
+  <script src="/bower/jtable/lib/external/json2.min.js"></script>
+  <script src="/bower/jtable/lib/jquery.jtable.min.js"></script>
+  <script src="/bower/jtable/lib/extensions/jquery.jtable.record-actions.js"></script>
+  <!-- socketio -->
+  <script src="/bower/socket.io-client/dist/socket.io.js"></script>
+  <script src="/bower/angular-socket-io/socket.min.js"></script>
+  <!-- angluarjs -->
+  <script src="/assets/javascripts/main/routing.js"></script>
+  <script src="/assets/javascripts/main/login.js"></script>
+  <script src="/assets/javascripts/services/restful.js"></script>
+  <script src="/assets/javascripts/main/dashboard/order.js"></script>
+  <script src="/assets/javascripts/main/dashboard/order-list.js"></script>
+  <script src="/assets/javascripts/main/dashboard/popup.js"></script>
+  <script src="/assets/javascripts/main/dashboard/employees.js"></script>
+  <script src="/assets/javascripts/main/dashboard/customers.js"></script>
+  <script src='/assets/javascripts/services/svSocket.js'></script>
+  <script src='/assets/javascripts/main/dashboard/online.js'></script>
+
+  <!-- print -->
+  <link  rel="stylesheet" href="/bower/angularPrint/angularPrint.css" />
+  <script src="/bower/angularPrint/angularPrint.js"></script>
+
+</head>
+
+<body ng-app="app" ng-controller="loginCtrl">
+  <div class="container-fluid">
+    <a href="#!/dashboard/homepage">
+      <span class="logo">
+        <img src="/assets/images/fpt.png" alt="">
+        <img src="/assets/images/logo-1.png" alt="">
+      </span>
+    </a>
+    <ui-view></ui-view>
+  </div>
+
+</body>
+
+</html>

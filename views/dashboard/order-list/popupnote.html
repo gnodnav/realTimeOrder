@@ -1,0 +1,31 @@
+<md-dialog aria-label="Mango (Fruit)">
+	<form ng-cloak>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>NOTE</h2>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div class="container-fluid ">
+				<div class="panel panel-table  toppad">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col col-xs-6">
+								<label for="note" class="label label-danger">* NOTE</label><br>
+							</div>
+						</div>
+					</div>
+
+					<div class="well">
+						<p style="font-size:14px"> - {{::textNote}}</p>
+					</div>
+
+
+				</div>
+			</div>
+		</md-dialog-content>
+		<md-dialog-actions layout="row">
+			<button ng-click="cancel()" type="button" class="btn btn-primary">OK</button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

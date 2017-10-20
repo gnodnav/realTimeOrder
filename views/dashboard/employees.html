@@ -1,0 +1,37 @@
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-offset-3 col-md-6">
+			<form>
+				<!-- <div class="input-group">
+					<input type="text" class="form-control " id="searchText" placeholder="Search" style="height: 45px;width: 500px">
+					<span class="input-group-btn">
+								 <button style="height: 45px;margin-right: 20px;" type="submit" class="btn btn-primary" id="btnSearch"><span class="glyphicon glyphicon-search"></span></button>
+					</span>
+				</div> -->
+				<div class="input-group">
+					<div class="input-group-btn search-panel">
+						<button type="button" class="btn btn-primary dropdown-toggle" style="height: 45px" data-toggle="dropdown">
+								<span id="search_concept" style="font-size: 16px">Filter by</span> <span class="caret"></span>
+							</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#id">Empl ID</a></li>
+							<li><a href="#name">Name</a></li>
+							<li><a href="#cd">Child Department</a></li>
+							<li><a href="#oc">Officer Code</a></li>
+						</ul>
+					</div>
+					<input type="text" class="form-control " id="searchText" ng-model="search" ng-change="reloadSearch()" placeholder="Search"
+					 style="height: 45px;width: 500px">
+					<span class="input-group-btn">
+							<button style="height: 45px;margin-right: 20px;" type="submit" class="btn btn-primary" id="btnSearch"><span class="glyphicon glyphicon-search"></span></button>
+					</span>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="toppad">
+		<employee-table id='tableEmployee'>
+		</employee-table>
+	</div>
+</div>
