@@ -11,12 +11,12 @@
         /* margin:0mm !important; */
         -webkit-print-color-adjust:exact;
         margin-top: 0mm;
-        margin-left: 5cm;
-        margin-right: 5cm;
+        margin-left: 4.5cm;
+        margin-right: 4.5cm;
         
     }
     h3{
-        margin-left: 9cm;
+        margin-left: 8.75cm;
     }
     .printOnly{
         visibility:visible;

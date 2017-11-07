@@ -33,12 +33,6 @@ app.controller('employeesCtrl', ['$scope', '$rootScope', '$localStorage', 'Notif
 			create: true,
 			edit: true
 		},
-		ChildDepartment: {
-			title: 'Child Department',
-			//	width: '15%',
-			create: true,
-			edit: true
-		},
 		OfficerCode: {
 			title: 'Officer Code',
 			//	width: '10%',
@@ -50,8 +44,13 @@ app.controller('employeesCtrl', ['$scope', '$rootScope', '$localStorage', 'Notif
 			//width: '10%',
 			create: true,
 			edit: true,
-			inputClass: 'validate[required,custom[email]]',
-
+		},
+		ChildDepartment: {
+			title: 'Child Department',
+			//	width: '15%',
+			create: true,
+			edit: true,
+			type: 'textarea',
 		},
 		authorities: {
 			title: 'Authorities',
@@ -147,7 +146,26 @@ app.controller('employeesCtrl', ['$scope', '$rootScope', '$localStorage', 'Notif
 							});
 						}
 					},
-					fields: $scope.employees
+					fields: $scope.employees,
+					formCreated: function (event, data) {
+						data.form.find('input[name="EmplID"]').addClass('validate[required]');
+						data.form.find('input[name="Name"]').addClass('validate[required]');
+						data.form.find('input[name="ChildDepartment"]').addClass('validate[required]');
+						data.form.find('input[name="OfficerCode"]').addClass('validate[required]');
+						//data.form.find('input[name="sdt"]').addClass('validate[required]');
+						data.form.find('input[name="Mail"]').addClass('validate[required],custom[email]');
+						data.form.validationEngine();
+
+					},
+					//Validate form when it is being submitted
+					formSubmitting: function (event, data) {
+						return data.form.validationEngine('validate');
+					},
+					//Dispose validation logic when form is closed
+					formClosed: function (event, data) {
+						data.form.validationEngine('hide');
+						data.form.validationEngine('detach');
+					}
 				});
 				$('.search-panel .dropdown-menu').find('a').click(function (e) {
 					e.preventDefault();

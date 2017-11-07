@@ -1,6 +1,6 @@
 var models = require('../models/model.js');
 
-module.exports = function (app) {
+module.exports = function (app, orderNumber) {
 	var order = models.order;
 	var file = models.file;
 	var ncc = models.ncc;
@@ -85,9 +85,9 @@ module.exports = function (app) {
 		// 	default:
 		// 		break;
 		// }
-		// console.log(check);
+		// console.log(check);	
 
-		order.find( {poNumber: req.params.id}, function (err, result) {
+		order.find({ poNumber: req.params.id }, function (err, result) {
 			if (err) {
 				res.status(500).json(err);
 				throw err;
@@ -103,10 +103,12 @@ module.exports = function (app) {
 	//add order
 	app.post('/api/dashboard/create-order/', function (req, res) {
 		var data = req.body;
+		var dateTime = new Date();
 		if (req.headers.authorization == "POM" || req.headers.authorization == "Manager") {
 			data.status = 'Pending';
 			data.approve = true
 		}
+		data.poNumber = dateTime.getFullYear() + "_" + orderNumber;
 		order.create(data, function (err, result) {
 			if (err) {
 				res.status(500).json(err);
@@ -117,23 +119,54 @@ module.exports = function (app) {
 					result: true,
 					data: result
 				})
+
+				orderNumber++;
 			}
 		});
 	})
 	//dowload file
 	app.get('/api/dowload/:id', function (req, res) {
-		file.find({ poNumber: req.params.id }, function (err, result) {
-			if (err) {
-				res.status(500).json(err);
-				throw err;
-			}
-			else {
-				res.json({
-					result: true,
-					data: result
+		if (req.headers.authorization === 'Administrator' || req.headers.authorization === 'POM') {
+			file.find({ idFile: req.params.id }, function (err, result) {
+				if (err) {
+					res.status(500).json(err);
+					throw err;
+				}
+				else {
+					res.json({
+						result: true,
+						id: result[0].idFile,
+						record: result[0].files
+					})
+				}
+			})
+		}
+		else {
+			file.aggregate(
+				{
+					$match: { idFile: req.params.id }
+				},
+				{ $unwind: "$files" },
+				{ $match: { "files.isPom": 'false' } }, function (err, result) {
+					if (err) {
+						res.status(500).json(err);
+						throw err;
+					}
+					else {
+						var data = [];
+						result.forEach(function (file) {
+							data.push(file.files);
+						}, this);
+						
+						res.json({
+							result: true,
+							id: result[0].idFile,
+							record: data
+						})
+					}
 				})
-			}
-		})
+		}
+
 	})
 	//approve order
 	app.put('/api/order-list/approve/:id', function (req, res) {
@@ -174,7 +207,7 @@ module.exports = function (app) {
 				})
 		});
 	})
-	//creat ncc
+	//create ncc
 	app.post('/api/order-list/createncc/', function (req, res) {
 		var data = req.body;
 		ncc.create(data, function (err, result) {
@@ -192,6 +225,7 @@ module.exports = function (app) {
 	})
 	//get ncc
 	app.get('/api/order-list/getncc/:id', function (req, res) {
+		//	console.log(req.params.id);
 		ncc.find({ name: req.params.id }, function (err, result) {
 			if (err) {
 				res.status(500).json(err);

@@ -1,4 +1,4 @@
-app.controller('orderListCtrl', ['$scope', '$rootScope', 'svOrderList', 'Notification', '$state', '$window', '$localStorage', 'svSocket', function ($scope, $rootScope, svOrderList, Notification, $state, $window, $localStorage, svSocket) {
+app.controller('orderListCtrl', ['$scope', '$rootScope', 'svOrderList', 'Notification', '$state', '$window', '$localStorage', 'svSocket', 'svEmployee', function ($scope, $rootScope, svOrderList, Notification, $state, $window, $localStorage, svSocket, svEmployee) {
 	//int
 	var temp = [];
 	$scope.itemsPerPage = 10;
@@ -30,15 +30,16 @@ app.controller('orderListCtrl', ['$scope', '$rootScope', 'svOrderList', 'Notific
 		if ($localStorage.employee.authorities == 'POM')
 			$scope.ordersCurrent.push(data);
 		else {
+			
 			for (var i = 0; i < $scope.ordersCurrent.length; i++)
 				if ($scope.ordersCurrent[i].poNumber == data.poNumber) {
 					$scope.ordersCurrent[i] = data;
 				}
 
-			for (var i = 0; i < $scope.orders.length; i++)
-				if ($scope.orders[i].poNumber == data.poNumber) {
-					$scope.orders[i] = data;
-				}
+			// for (var i = 0; i < $scope.orders.length; i++)
+			// 	if ($scope.orders[i].poNumber == data.poNumber) {
+			// 		$scope.orders[i] = data;
+			// 	}
 		}
 	})
 	svSocket.on('viewUpdateOrder', function (data) {
@@ -52,6 +53,7 @@ app.controller('orderListCtrl', ['$scope', '$rootScope', 'svOrderList', 'Notific
 		$scope.totalItems = $scope.orders.length;
 	else
 		$scope.orders = [];
+
 	$scope.parsePage = function (arraySrc, arrayDes, length) {
 		var temp = arraySrc.slice(0, arraySrc.length);
 		for (var i = 0; i < length / $scope.itemsPerPage; i++) {
@@ -115,13 +117,17 @@ app.controller('orderListCtrl', ['$scope', '$rootScope', 'svOrderList', 'Notific
 	$scope.back = function () {
 		$window.history.back();
 	}
+	$scope.confirm = function () {
+		$(function () {
+			$("#file-Mail").fileinput('upload');
+		});
+	}
 	$scope.updateOrder = function () {
 		svOrderList.updateOrder($rootScope.order).then(
 			function successCallback(res) {
 				svSocket.emit('updateOrder', $rootScope.order);
 				Notification({ message: `Update đơn hàng thành công`, title: 'Thông báo', delay: 2000 });
 				$state.transitionTo("order-list")
-				//searchID($scope.ordersCurrent, order.poNumber, order)
 			},
 			function errorCallback(res) {
 				console.log(res.status);
@@ -130,10 +136,65 @@ app.controller('orderListCtrl', ['$scope', '$rootScope', 'svOrderList', 'Notific
 	}
 	$scope.printValue = function (item) {
 		$scope.order = item;
+		$scope.datetime = new Date;
 
-		setTimeout(function () {
-			document.getElementById("kaka").click();
-		}, 200);
-
+		if (item.EmplID == $localStorage.employee.EmplID) {
+			$scope.order.employee = $localStorage.employee.Name;
+			setTimeout(function () {
+				document.getElementById("kaka").click();
+			}, 100);
+		}
+		else {
+			svEmployee.getInfo(item.EmplID)
+				.then(function successCallbac(res) {
+					$scope.order.employee = res.data[0].Name;
+					setTimeout(function () {
+						document.getElementById("kaka").click();
+					}, 100);
+				}, function errorCallbac(res) {
+					Notification.error({ message: 'Lỗi hệ thống', delay: 2000 });
+					console.log(res.status);
+				})
+		}
+	}
+}]).directive('printOrder', ['$localStorage', function ($localStorage) {
+	return {
+		scope: true,
+		restrict: 'AE',
+		templateUrl: '/views/dashboard/order-list/print.html'
+	}
+}]).directive("uploadMail", ['$localStorage', function ($localStorage) {
+	return {
+		scope: true,
+		restrict: 'AE',
+		controller: function ($scope, $rootScope) {
+			$(document).ready(function () {
+				$("#file-Mail").fileinput({
+					uploadUrl: '/api/upload/', // you must set a valid URL here else you will get an error
+					allowedFileExtensions: ['jpg', 'png', 'msg', 'gif', 'pdf', 'docx', 'doc', 'zip'],
+					overwriteInitial: false,
+					maxFileCount: 4,
+					validateInitialCount: true,
+					uploadAsync: false,
+					showUpload: false,
+					required: true,
+					showPreview: false,
+					showRemove: false,
+					slugCallback: function (filename) {
+						return filename.replace('(', '_').replace(']', '_');
+					},
+					uploadExtraData: function (previewId, index) {
+						var info = {
+							"tags": $rootScope.order.idFile,
+							"mail": true
+						};
+						return info;
+					}
+				}).on('filebatchuploadcomplete', function (event, files, extra) {
+					console.log('File batch upload complete');
+					$scope.updateOrder();
+				});
+			})
+		}
 	}
 }])

@@ -2,7 +2,7 @@ app.config(function ($mdThemingProvider) {
 	$mdThemingProvider.theme('blue')
 		.primaryPalette('blue');
 
-}).controller('popupCtrl', ['$scope', '$mdDialog', '$interval', 'svOrderList', '$state', 'Notification', function ($scope, $mdDialog, $interval, svOrderList, $state, Notification) {
+}).controller('popupCtrl', ['$scope', '$rootScope', '$mdDialog', '$interval', 'svOrderList', '$state', 'Notification', '$window', function ($scope, $rootScope, $mdDialog, $interval, svOrderList, $state, Notification, $window) {
 	$scope.theme = 'blue';
 	$scope.customFullscreen = false;
 	$scope.showAlert = function (ev, note, title) {
@@ -38,8 +38,6 @@ app.config(function ($mdThemingProvider) {
 			});
 	};
 	function DialogController($scope, $mdDialog, $interval, $state, Notification, items, id, url) {
-
-
 		$scope.files = [];
 		$scope.NCC = [];
 		$scope.textNote = '';
@@ -47,9 +45,10 @@ app.config(function ($mdThemingProvider) {
 			case '/views/dashboard/order-list/downloadfile.html':
 				svOrderList.downloadFile(items)
 					.then(function successCallback(res) {
-						if (res.data.data.length == 0)
+						if (res.data.record === undefined)
 							return;
-						$scope.files = res.data.data[0].files;
+						$scope.idFile = res.data.id;
+						$scope.files = res.data.record;
 					}, function errorCallback(res) {
 						console.log(res.status);
 					})
@@ -63,6 +62,8 @@ app.config(function ($mdThemingProvider) {
 							unitPrice: items.unitPrice,
 							check: true
 						}
+						// if ($scope.NCC.length > 0)
+						// 	data.check = false;
 						$scope.NCC.unshift(data);
 					},
 					function errorCallback(res) {
@@ -70,7 +71,6 @@ app.config(function ($mdThemingProvider) {
 					}
 				)
 				break;
-
 			case '/views/dashboard/order-list/popupnote.html':
 				$scope.textNote = items;
 				break;
@@ -84,12 +84,9 @@ app.config(function ($mdThemingProvider) {
 			}
 			item.check = true;
 		}
-		$scope.formatCrrentcy = function (number) {
-			var price = parseFloat(number);
-			return price.toFixed(0).replace(/./g, function (c, i, a) {
-				return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
-			});
-		}
+
+		$scope.formatCrrentcy = $rootScope.formatCrrentcy;
+
 		$scope.addNCC = function () {
 			var data = {
 				pnNumber: items.pnNumber,
@@ -103,7 +100,7 @@ app.config(function ($mdThemingProvider) {
 					$scope.NCC.push(data);
 					$scope.supplier = '';
 					$scope.unitPrice = '';
-					console.log(res.data);
+					//	console.log(res.data);
 				},
 				function errorCallback(res) {
 					console.log(res.status);
@@ -123,7 +120,10 @@ app.config(function ($mdThemingProvider) {
 			}, 0);
 		}
 
-
+		$scope.savePdfRP = function (fileName) {
+			var url = '/assets/uploads/' + fileName;
+			$window.open(url);
+		}
 
 		$scope.hide = function () {
 			$mdDialog.hide();
@@ -132,7 +132,7 @@ app.config(function ($mdThemingProvider) {
 		$scope.cancel = function () {
 			$mdDialog.cancel();
 		};
-
+		$scope.formatSecToDate = $rootScope.formatSecToDate;
 		$scope.confirm = function () {
 			var temp = {};
 			for (var i = 0; i < $scope.NCC.length; i++) {

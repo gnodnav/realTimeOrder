@@ -1,0 +1,73 @@
+<div print-section class="container-fluid" print-only>
+	<div class="row" style="font-family: 'Times New Roman', Times, serif; font-size: 16px ;margin-top: -30px">
+		<p style="display: inline;float: right;font-weight: bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+			<br>
+			<i style="margin-left: 1.5cm">Độc lập - Tự do - Hạnh phúc</i>
+			<br>
+			<i style="margin-left: 0.75cm; font-weight: normal !important">Tp HCM, ngày {{datetime.getDate()}} Tháng {{datetime.getMonth()+1}} Năm {{datetime.getFullYear()}}</i>
+		</p>
+		<p style="font-weight: bold;margin-left: 0.5cm">CÔNG TY TNHH HỆ THỐNG THÔNG TIN FPT </p>
+		<P style=" line-height: 0.1; margin-left: 1cm">CN tại TPHCM Cty TNHH DV HTTT FPT</P>
+		<br>
+		<h3 style="font-weight: bold">ĐƠN ĐẶT HÀNG </h3>
+		<p style="float:right">Số : {{order.poNumber}} </p>
+		<p>
+			<br>Người đề nghị đặt hàng :
+			<b>{{order.EmplID}} - {{order.employee}}, PLX: Kho {{order.Warehouse}}</b>
+			<br>Bộ Phận Đặt Hàng :
+			<strong>{{order.ChildDepartment}}</strong>
+			<br>Hợp đồng dự thầu/ Dự thầu (nếu có) :
+			<strong>PO</strong>
+			<br>Khách hàng :
+			<strong>{{order.customerName}}</strong>
+			<br>Cam kết của phòng XNK : Theo khung hạng mục hàng hóa.
+			<br>Thời gian triển khai hợp đồng:
+			<strong>{{order.type}}</strong>
+		</p>
+		<br>
+		<table print-table="order" class="table table-striped table-bordered table-list ">
+			<thead>
+				<tr>
+					<th class="col-text">Mã hàng (P/N)</th>
+					<th class="col-text">Tên hàng, miêu tả hàng hóa</th>
+					<th class="col-text">Số lượng</th>
+					<th class="col-text">Đơn giá mua</th>
+					<th class="col-text">Yêu cầu CO</th>
+					<th class="col-text">Yêu cầu CQ</th>
+					<th class="col-text">Thông tin nhà cung ứng</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in order.products">
+					<td>{{::item.pnNumber}}</td>
+					<td>{{::item.name}}</td>
+					<td>{{::item.frequency}}</td>
+					<td>{{::formatCrrentcy(item.unitPrice)}}</td>
+					<td>{{item.CQ_CO}}</td>
+					<td>{{item.CQ_CO}}</td>
+					<td>{{::item.NCCDN}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>Các yêu cầu khác : .......................................
+			<br>Tổng tiền hàng : {{formatCrrentcy(order.totalPrice)}} VNĐ
+			<br>Check thêm giá : .......................................
+			<br>Đã kiểm tra hàng tồn kho bộ phận:
+			<i class="glyphicon glyphicon-unchecked"></i>Không tồn
+			<br>Các thông tin khác: (khách hàng / nhà cung ứng): Thông tin khách hàng
+			<br>
+			<strong>{{order.customerName}}</strong>
+			<br>
+			<strong>Địa chỉ: {{order.customerAddress}}</strong>
+		</p>
+		<ul class="nav">
+			<b style="margin-left:1cm">Po</b>
+			<b style="margin-left:1cm">CB kinh doanh</b>
+			<b style="margin-left:1cm">Quản trị dự án</b>
+			<b style="margin-left:1cm">FIS SVR BP</b>
+			<b style="margin-left:1cm">Tổng giám đốc</b>
+			<b style="margin-left:1cm">FIS BP</b>
+			<b style="margin-left:1cm">Phòng XNK</b>
+		</ul>
+	</div>
+</div>

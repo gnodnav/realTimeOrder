@@ -3,46 +3,59 @@
 		<!-- <div class="container-fluid"> -->
 		<div class="navbar-header" style="margin-left: 80px;">
 			<a class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse">
-                  <i class="fa fa-chevron-down faa-vertical animated"></i>
-              </a>
+				<i class="fa fa-chevron-down faa-vertical animated"></i>
+			</a>
 			<a tabindex="0" class="navbar-brand faa-pulse faa-slow animated" data-toggle="popover" data-trigger="focus" data-html="true"
 			 data-placement="bottom" data-title="Brand Quote..." data-content="<img class='img-responsive' height='140' width='140' src='data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='/<p>Your Brand Image</p>">
-          </a>
+			</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li>
 					<a href="#!/dashboard/homepage" class="faa-parent animated-hover">
-                         <i class="fa fa-fw fa-lg fa-home faa-tada faa-fast"></i>Home </a>
+						<i class="fa fa-fw fa-lg fa-home faa-tada faa-fast"></i>Home </a>
 				</li>
 				<li>
 					<a href="#!/dashboard/order-list" class="faa-parent animated-hover">
-                       <i class="fa fa-fw fa-lg fa-shopping-cart  faa-tada faa-fast"></i> Orders</a>
+						<i class="fa fa-fw fa-lg fa-shopping-cart  faa-tada faa-fast"></i> Orders</a>
 				</li>
 				<li ng-show="employees">
 					<a href="#!/dashboard/employees" class="faa-parent animated-hover">
-						   <i class="fa fa-fw fa-lg fa-th faa-tada faa-fast"></i> Employees</a>
+						<i class="fa fa-fw fa-lg fa-th faa-tada faa-fast"></i> Employees</a>
 				</li>
 
-				<li ng-show="customers">
+				<li >
 					<a href="#!/dashboard/customers" class="faa-parent animated-hover">
-							   <i class="fa fa-fw fa-lg fa-users faa-tada faa-fast"></i> Customers</a>
+						<i class="fa fa-fw fa-lg fa-users faa-tada faa-fast"></i> Customers</a>
 				</li>
-				<li ng-show="online">
+				<!-- <li ng-show="online">
 					<a href="#!/dashboard/online" class="faa-parent animated-hover">
-							   <i class="fa fa-fw fa-lg fa-globe faa-tada faa-fast"></i> Online</a>
-				</li>
+						<i class="fa fa-fw fa-lg fa-globe faa-tada faa-fast"></i> Online</a>
+				</li> -->
 			</ul>
 			<ul class="nav navbar-nav navbar-right" style="margin-right: 0px">
 				<li class="dropdown" ng-if="isAuthenticated()">
 					<a href class="btn  btn-lg faa-parent animated-hover " data-toggle="dropdown">
-                    <i class="fa fa-fw fa-lg fa-user faa-tada faa-fast"></i> <span ng-bind="username"></span>
-                    <span class="caret"></span>
-                  </a>
+						<i class="fa fa-fw fa-lg fa-user faa-tada faa-fast"></i>
+						<span ng-bind="username"></span>
+						<span class="caret"></span>
+					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#!/dashboard/user-info">Profile <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
-						<li><a href="#!/dashboard/change-password">Change<span class="glyphicon glyphicon-edit pull-right"></span></a></li>
-						<li><a href ng-click="logout()">Sign Out<span class="	glyphicon glyphicon-log-out pull-right"></span></a></li>
+						<li>
+							<a href="#!/dashboard/user-info">Profile
+								<span class="glyphicon glyphicon-cog pull-right"></span>
+							</a>
+						</li>
+						<li>
+							<a href="#!/dashboard/change-password">Change
+								<span class="glyphicon glyphicon-edit pull-right"></span>
+							</a>
+						</li>
+						<li>
+							<a href ng-click="logout()">Sign Out
+								<span class="	glyphicon glyphicon-log-out pull-right"></span>
+							</a>
+						</li>
 					</ul>
 				</li>
 			</ul>
@@ -56,10 +69,11 @@
 </div>
 <div class="container">
 	<div class="row">
-		<div class="col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 toppad">
-			<div ui-view="contentView" class="content">
-			</div>
+		<!-- <div class="col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 toppad"> -->
+		<div ui-view="contentView" class="content">
+
 		</div>
+		<!-- </div> -->
 	</div>
 </div>
 <footer>

@@ -33,8 +33,14 @@ app.use('/bower', express.static(__dirname + '/bower_components'));
 
 app.use('/', index);
 app.use('/users', users);
+//count order
+var orderNumber = 3000;
+var dateTime = new Date();
+if (dateTime.getDay() == 1 && dateTime.getMonth() == 1)
+  orderNumber = 0;
+
 //api
-orderController(app);
+orderController(app,orderNumber);
 employeeController(app);
 uploadController(app);
 customerController(app);

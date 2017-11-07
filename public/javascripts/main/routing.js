@@ -1,4 +1,4 @@
-var app = angular.module('app', ['AngularPrint', 'ui-notification', 'ngRoute', 'ui.router', "ui.bootstrap", 'ngMaterial', 'ngStorage', 'angularFileUpload', 'btford.socket-io']);
+var app = angular.module('app', ['AngularPrint', 'ui-notification', 'ngRoute', 'ui.router', "ui.bootstrap", 'ngMaterial', 'ngStorage', 'btford.socket-io']);
 app.config(function ($stateProvider, $urlRouterProvider) {
 
 	$urlRouterProvider.otherwise('/login');
@@ -10,7 +10,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 			controller: 'loginCtrl',
 			onEnter: function ($state, $localStorage, $rootScope, $http) {
 				if ($localStorage.user) {
-					$state.transitionTo('homepage');
+					$state.go('homepage');
 				}
 
 			}
@@ -20,9 +20,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 		.state('dashboard', {
 			url: '/dashboard',
 			templateUrl: '/views/body/dashboard.html',
-			onEnter: function ($state, $localStorage, $rootScope, $http, svSocket) {
-
-				$http.defaults.headers.common.Authorization = $localStorage.employee.authorities;
+			controller: function (svSocket, $localStorage) {
 				var info = {
 					room: $localStorage.employee.ChildDepartment,
 					id: $localStorage.employee.EmplID,
@@ -30,22 +28,20 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 					ChildDepartment: $localStorage.employee.ChildDepartment
 				}
 				svSocket.emit('newUser', info);
-				//svSocket.emit('userOnline','Đồng đẹp trai');
-
+			},
+			onEnter: function ($state, $localStorage, $rootScope, $http) {
+				$http.defaults.headers.common.Authorization = $localStorage.employee.authorities;
 				if ($localStorage.employee.authorities == 'Administrator') {
 					$rootScope.employees = true;
-					$rootScope.customers = true;
+					//	$rootScope.customers = true;
 					$rootScope.online = true;
 				}
 				else {
 					$rootScope.employees = false;
-					$rootScope.customers = false;
+					//	$rootScope.customers = false;
 					$rootScope.online = false;
 				}
-
 			}
-
-
 		})
 		.state('homepage', {
 			parent: 'dashboard',
@@ -177,7 +173,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 			parent: 'dashboard',
 			url: '/employees',
 			views: {
-				'viewEmployees': {
+				'contentView': {
 					templateUrl: '/views/dashboard/employees.html',
 					controller: 'employeesCtrl'
 				},
@@ -193,35 +189,31 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 			parent: 'dashboard',
 			url: '/customers',
 			views: {
-				'viewEmployees': {
+				'contentView': {
 					templateUrl: '/views/dashboard/customers.html',
 					controller: 'customersCtrl'
 				},
 			},
 			onEnter: function ($state, $localStorage) {
-				if ($localStorage.employee.authorities != 'Administrator')
-					$state.transitionTo('order-list');
-
+				// if ($localStorage.employee.authorities != 'Administrator')
+				// 	$state.transitionTo('order-list');
 				delete $localStorage.optionFilterCustomer;
 			}
 		})
-		.state('online', {
-			parent: 'dashboard',
-			url: '/online',
-			views: {
-				'viewEmployees': {
-					templateUrl: '/views/dashboard/online.html',
-					controller: 'onlineCtrl'
-				},
-			},
-			onEnter: function ($state, svSocket,$localStorage) {
-				if ($localStorage.employee.authorities != 'Administrator')
-					$state.transitionTo('order-list');
-
-				svSocket.emit('newUser', false);
-			}
-
-		})
+	// .state('online', {
+	// 	parent: 'dashboard',
+	// 	url: '/online',
+	// 	views: {
+	// 		'contentView': {
+	// 			templateUrl: '/views/dashboard/online.html',
+	// 			controller: 'onlineCtrl'
+	// 		},
+	// 	},
+	// 	onEnter: function ($state, svSocket, $localStorage) {
+	// 		if ($localStorage.employee.authorities != 'Administrator')
+	// 			$state.transitionTo('order-list');
+	// 	}
+	// })
 });
 app.config(function (NotificationProvider) {
 	NotificationProvider.setOptions({
@@ -243,10 +235,11 @@ app.run(function ($localStorage, $transitions, $location, $state, $http) {
 			return state.name !== 'login';
 		}
 	}, function (trans) {
-		if ($localStorage.user)
+		if ($localStorage.user) {
 			return true;
+		}
 		else
-			return trans.router.stateService.target('login');
+			return trans.router.stateService.tar('login');
 
 	});
 	$transitions.onError({}, function (trans) {

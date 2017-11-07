@@ -1,49 +1,4 @@
-<div print-section class="container-fluid" print-only>
-
-	<div class="row">
-		<p>Công ty FPT Infomation Systems
-			<br> Địa chỉ : 261 - 263 Nam giao building.
-			<br> ĐT :
-			<br>Fax :
-			<br>Website : fis.com.vn
-		</p>
-		<h3>ĐƠN ĐẶT HÀNG </h3>
-		<p>
-			<br>Khách Hàng : {{order.customerName}}
-			<i style="margin-left: 12cm">Mã Đơn hàng : {{order.poNumber}}</i>
-
-			<br>Địa Chỉ : {{order.customerAddress}}
-			<br>
-			<br>Kho Hàng : {{order.Warehouse}}
-		</p>
-		<table print-table="order" class="table table-striped table-bordered table-list ">
-			<thead>
-				<tr>
-					<th class="col-text">P/N</th>
-					<th class="col-text">Tên hàng</th>
-					<th class="col-text">Số lượng</th>
-					<th class="col-text">Đơn giá</th>
-					<th class="col-text">Nhà cung cấp</th>
-					<th class="col-text">Thành tiền</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in order.products">
-					<td>{{::item.pnNumber}}</td>
-					<td>{{::item.name}}</td>
-					<td>{{::item.frequency}}</td>
-					<td>{{::formatCrrentcy(item.unitPrice)}}</td>
-					<td>{{::item.NCCDN}}</td>
-					<td>{{formatCrrentcy(item.price)}}</td>
-				</tr>
-			</tbody>
-		</table>
-		<p style="margin-left :15cm">Tổng tiền hàng : {{order.totalPrice}} VNĐ</p>
-		<p style="margin-left :16cm">Ngày.....Tháng.....Năm</p>
-		<p style="margin-left :16.5cm">Người lập phiếu</p>
-		<i style="margin-left :16cm">(Ký và ghi rõ họ tên) </i>
-	</div>
-</div>
+<print-order></print-order>
 <div class="panel panel-default panel-table">
 	<div class="panel-heading">
 		<div class="row">
@@ -158,5 +113,4 @@
 			</div>
 		</div>
 	</div>
-</div>
 </div>

@@ -60,6 +60,8 @@ module.exports = function (app) {
 	});
 
 	app.post("/api/CreateCustomer", function (req, res) {
+		console.log(req.body);
+		req.body.customerID = Date.now();
 		customer.create(req.body, function (err, result) {
 			var data = req.body;
 			if (err) {

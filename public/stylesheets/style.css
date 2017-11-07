@@ -248,27 +248,8 @@ table {
 .container{
   margin-top:20px;
 }
-.image-preview-input {
-  position: relative;
-overflow: hidden;
-margin: 0px;    
-  color: #333;
-  background-color: #fff;
-  border-color: #ccc;    
-}
-.image-preview-input input[type=file] {
-position: absolute;
-top: 0;
-right: 0;
-margin: 0;
-padding: 0;
-font-size: 20px;
-cursor: pointer;
-opacity: 0;
-filter: alpha(opacity=0);
-}
-.image-preview-input-title {
-  margin-left:2px;
+.krajee-default.file-preview-frame .kv-file-content{
+  height: 94px !important;
 }
 /* radio */
 .buying-selling {
@@ -341,6 +322,7 @@ filter: alpha(opacity=0);
   /* jtable */
   div.jtable-main-container{
     font-family: 'Karla', sans-serif !important;
+ 
   }
   div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td{
     text-align: center;
@@ -353,7 +335,14 @@ filter: alpha(opacity=0);
     font-family: 'Karla', sans-serif !important;
   }
   .ui-widget input[type='text'], .ui-widget textarea {
-    width: 100%;
+    width: 75%;
+  }
+  .ui-dialog .ui-dialog-content{
+    width: 450px !important;
+
+  }
+  .ui-widget textarea{
+    width: 50%;
   }
   div.jtable-main-container>div.jtable-title {
     background-color: #4d80b1;;
@@ -380,7 +369,11 @@ button, input, select, textarea {
 .panel-footer, .panel-table .panel-body .table-bordered {
   border-style: none;
   margin: 0;
+  /* margin-top: -10px; */
 }
+/* .panel-info>.panel-heading {
+    margin-top: -17px;
+} */
 
 .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
   text-align: center;
@@ -523,7 +516,8 @@ span.round-tab:hover {
 .wizard .nav-tabs > li {
     width: 25%;
     bottom: 70px;
-    margin-top:20px;
+     margin-top:20px;
+    /*margin-bottom :-15px; */
 }
 .wizard li:after {
     content: " ";
@@ -778,3 +772,5 @@ span.round-tab:hover {
 
 .dialogdemoBasicUsage .dialog-demo-prerendered md-checkbox {
   margin-bottom: 0; }
+
+  

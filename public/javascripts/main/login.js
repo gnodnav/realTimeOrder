@@ -1,4 +1,5 @@
 app.controller('loginCtrl', ['$scope', 'svEmployee', 'svSocket', '$location', '$localStorage', 'Notification', '$state', '$http', function ($scope, svEmployee, svSocket, $location, $localStorage, Notification, $state, $http) {
+
 	$scope.isAuthenticated = function () {
 		if ($localStorage.user) {
 			$scope.username = $localStorage.user[0].Username;
@@ -54,20 +55,18 @@ app.controller('loginCtrl', ['$scope', 'svEmployee', 'svSocket', '$location', '$
 			})
 	}
 	$scope.logout = function () {
-		//svSocket.emit('disconnect', 'transport close');
 		svSocket.disconnect();
 		$localStorage.user = '';
 		$location.path("/login");
 		$scope.dropdownLogin = false;
 		$scope.username = '';
-
-
 	}
 	$scope.refresh = function () {
 		$scope.newPass = '';
 		$scope.currPass = '';
 		$scope.confirmPass = '';
 	}
+
 	$scope.changePassword = function () {
 		var data = {
 			EmplID: $localStorage.user[0].EmplID,
@@ -100,3 +99,14 @@ app.controller('loginCtrl', ['$scope', 'svEmployee', 'svSocket', '$location', '$
 		}
 	}
 }])
+
+
+// app.controller('dashboradCtrl', ['$scope', 'svSocket', '$localStorage', function ($scope, svSocket, $localStorage) {
+// 	var info = {
+// 		room: $localStorage.employee.ChildDepartment,
+// 		id: $localStorage.employee.EmplID,
+// 		authorities: $localStorage.employee.authorities,
+// 		ChildDepartment: $localStorage.employee.ChildDepartment
+// 	}
+// 	svSocket.emit('newUser', info);
+// }])

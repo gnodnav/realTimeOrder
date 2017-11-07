@@ -5,7 +5,6 @@ module.exports = function (io) {
 
 	io.on('connection', function (socket) {
 		socket.on('newUser', function (info) {
-
 			if (info) {
 				socket.authorities = info.authorities;
 				socket.room = info.room;
@@ -14,20 +13,19 @@ module.exports = function (io) {
 				if (JSON.stringify(employee).indexOf(JSON.stringify(info), 0) == -1)
 					employee.push(info);
 			}
-
 			if (socket.authorities === 'Administrator')
 				_administrator = socket;
 
-			if (io.sockets.connected[_administrator.id])
-				io.sockets.connected[_administrator.id].emit('viewEmployeeOnline', employee)
+			// if (io.sockets.connected[_administrator.id])
+			// 	io.sockets.connected[_administrator.id].emit('viewEmployeeOnline', employee)
 		})
 		socket.on('disconnect', function (data) {
 			if (client.indexOf(socket) != -1) {
 				employee.splice(client.indexOf(socket), 1);
 				client.splice(client.indexOf(socket), 1);
 			}
-			if (io.sockets.connected[_administrator.id])
-				io.sockets.connected[_administrator.id].emit('viewEmployeeOnline', employee)
+			// if (io.sockets.connected[_administrator.id])
+			// 	io.sockets.connected[_administrator.id].emit('viewEmployeeOnline', employee)
 
 		});
 		socket.on('create_order', function (data) {
@@ -95,30 +93,28 @@ module.exports = function (io) {
 			}, this);
 		})
 		socket.on('updateOrder', function (data) {
-
-
-
+			console.log(client.length);
 			client.forEach(function (_socket) {
 				if (_socket.id !== socket.id) {
 					switch (_socket.authorities) {
 						case 'POM':
 						case 'Administrator':
 							if (io.sockets.connected[_socket.id]) {
-								io.sockets.connected[_socket.id].emit('viewCreateOrder', data);
+								io.sockets.connected[_socket.id].emit('viewUpdateOrder', data);
 							}
 							break;
 						case 'Admin':
 						case 'Manager':
 							if (_socket.room == data.ChildDepartment) {
 								if (io.sockets.connected[_socket.id]) {
-									io.sockets.connected[_socket.id].emit('viewCreateOrder', data);
+									io.sockets.connected[_socket.id].emit('viewUpdateOrder', data);
 								}
 							}
 							break;
 						default:
 							if (_socket.EmplID == data.EmplID) {
 								if (io.sockets.connected[_socket.id]) {
-									io.sockets.connected[_socket.id].emit('viewCreateOrder', data);
+									io.sockets.connected[_socket.id].emit('viewUpdateOrder', data);
 								}
 							}
 							break;
@@ -126,9 +122,5 @@ module.exports = function (io) {
 				}
 			}, this);
 		})
-		socket.on('jaja', function () {
-			//	console.log(client.length);
-		})
-
 	});
 }

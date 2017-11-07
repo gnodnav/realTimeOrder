@@ -21,11 +21,14 @@ var accountSchema = new Schema({
 var orderSchema = new Schema({
 	EmplID: Number,
 	poNumber: String,
+	idFile: String,
 	ChildDepartment: String,
 	type: String,
 	Warehouse: String,
 	customerName: String,
 	customerAddress: String,
+	customerEmail: String,
+	customerPhone: String,
 	approve: Boolean,
 	datetime: String,
 	products: [{
@@ -47,10 +50,19 @@ var orderSchema = new Schema({
 }, { collection: 'order' })
 
 var fileUploadSchema = new Schema({
-	poNumber: String,
-	files: []
+	idFile: String,
+	files: [{
+		fieldname: String,
+		isPom: String,
+		originalname: String,
+		encoding: String,
+		mimetype: String,
+		destination: String,
+		filename: String,
+		path: String,
+		size: Number
+	}]
 }, { collection: 'file' })
-
 
 var permissionsSchema = new Schema({
 	view: String,

@@ -15,20 +15,53 @@ module.exports = function (app) {
 	var upload = multer({ storage: storage });
 	app.post('/api/upload/', upload.any(), function (req, res, next) {
 		var data = {
-			poNumber: req.body.tags,
+			idFile: req.body.tags,
 			files: req.files
 		}
-		file.create(data, function (err, result) {
-			if (err) {
-				res.status(500).json(err);
-				throw err;
-			}
-			else {
-				res.json({
-					result: true,
-					data: result
+		//	console.log(req.files);
+
+		if (req.body.mail == 'true') {
+			for (var i = 0; i < req.files.length; i++)
+				req.files[i].isPom = 'true';
+
+			file.update(
+				{ idFile: data.idFile },
+				{
+					// $push: {
+					// 	files: data.files[0],
+					// 	$position: 0
+					// }
+					$push: { files: { $each: [data.files[0]], $position: 0 } }
+				}
+				, function (err, result) {
+					if (err) {
+						res.status(500).json(err);
+						throw err;
+					}
+					else {
+						res.json({
+							result: true,
+							data: result
+						})
+					}
 				})
-			}
-		})
+		} else {
+			for (var i = 0; i < req.files.length; i++)
+				req.files[i].isPom = 'false';
+
+			file.create(data, function (err, result) {
+				if (err) {
+					res.status(500).json(err);
+					throw err;
+				}
+				else {
+					console.log(result);
+					res.json({
+						result: true,
+						data: result
+					})
+				}
+			})
+		}
 	})
 }
